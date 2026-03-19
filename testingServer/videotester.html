@@ -1,0 +1,20 @@
+<!-- test.html -->
+<video controls width="600" id="player"></video>
+
+<script>
+fetch("http://localhost:4003/s/play/66", {
+  method: "GET",
+  credentials: "include",
+  headers: {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbWFsQHRlc3QuY29tIiwiaWF0IjoxNzczNzkwMTU5LCJleHAiOjE3NzM4NzY1NTl9.jiTe2hblyp0GeOIvVSMJ_M4jiBRMUAPctFyEx_a3qQA"
+  }
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Response:", data);
+
+  const video = document.getElementById("player");
+  video.src = data.videoUrl;
+})
+.catch(err => console.error(err));
+</script>

@@ -1,0 +1,774 @@
+CloudFlix – Netflix-Style Video Streaming Platform on AWS
+1. Project Overview
+
+CloudFlix is a scalable Netflix-style video streaming platform built using Microservices Architecture and deployed on AWS Cloud Infrastructure.
+
+The goal of this project is to demonstrate real-world cloud architecture using multiple AWS services such as:
+
+IAM
+
+EC2
+
+VPC
+
+Transit Gateway
+
+S3
+
+Aurora (RDS)
+
+DynamoDB
+
+ElastiCache
+
+EBS
+
+EFS
+
+SNS
+
+CloudFront
+
+Load Balancer
+
+Auto Scaling
+
+NAT Gateway
+
+The system allows users to:
+
+Register and login
+
+Upload videos
+
+Watch streaming videos
+
+Get video recommendations
+
+Receive notifications
+
+Track watch history
+
+This project demonstrates enterprise-level AWS architecture similar to platforms like Netflix.
+
+2. Technology Stack
+Backend
+
+Node.js
+
+Express.js
+
+REST APIs
+
+JWT Authentication
+
+Frontend
+
+Flutter
+
+Web + Mobile support
+
+Databases
+
+Amazon Aurora (RDS) → relational data
+
+DynamoDB → high-speed data
+
+ElastiCache (Redis) → caching
+
+Storage
+
+S3 → video storage
+
+EFS → shared storage
+
+EBS → EC2 disks
+
+Messaging
+
+SNS → notifications
+
+Infrastructure
+
+EC2
+
+Load Balancer
+
+Auto Scaling
+
+Transit Gateway
+
+Multi-VPC architecture
+
+CloudFront CDN
+
+3. Microservices Architecture
+
+The backend is divided into multiple independent services.
+
+Services
+
+1️⃣ Auth Service
+Handles authentication.
+
+Features:
+
+Signup
+
+Login
+
+JWT token generation
+
+Password hashing
+
+2️⃣ User Service
+
+Features:
+
+Profile management
+
+User settings
+
+Subscription details
+
+3️⃣ Video Service
+
+Features:
+
+Video upload
+
+Video metadata
+
+Thumbnail generation
+
+4️⃣ Streaming Service
+
+Features:
+
+Generate streaming URLs
+
+Secure video delivery
+
+Connect to CloudFront
+
+5️⃣ Recommendation Service
+
+Features:
+
+Suggest videos
+
+Track watch patterns
+
+Trending content
+
+6️⃣ Notification Service
+
+Features:
+
+Send notifications
+
+SNS integration
+
+Examples:
+
+new video uploaded
+
+subscription expiry
+
+4. API Gateway
+
+All services are accessed through a central gateway.
+
+Architecture:
+
+Client → API Gateway → Microservices
+
+Example flow:
+
+Flutter App
+↓
+API Gateway
+↓
+Auth Service / Video Service / User Service
+
+Benefits:
+
+centralized routing
+
+authentication middleware
+
+logging
+
+rate limiting
+
+5. Database Architecture
+Aurora (Relational Database)
+
+Stores structured data.
+
+Tables:
+
+users
+videos
+subscriptions
+comments
+likes
+
+DynamoDB
+
+Stores high-speed large data.
+
+Tables:
+
+watch_history
+video_views
+user_sessions
+
+ElastiCache (Redis)
+
+Caching layer for fast responses.
+
+Cached data:
+
+trending videos
+popular content
+user sessions
+
+6. Storage System
+S3
+
+Stores:
+
+videos
+
+thumbnails
+
+logs
+
+backups
+
+EFS
+
+Shared storage between microservices.
+
+Used for:
+
+temporary video processing
+
+shared assets
+
+EBS
+
+Attached storage for EC2 instances.
+
+7. CDN Video Streaming
+
+Video streaming works using CloudFront CDN.
+
+Flow:
+
+User
+↓
+CloudFront Edge Server
+↓
+S3 Bucket (Origin)
+
+Benefits:
+
+low latency
+
+global distribution
+
+reduced server load
+
+8. Multi-VPC Architecture
+
+The system uses three VPCs connected using Transit Gateway.
+
+Transit Gateway
+      |
+------------------------------------
+|              |                   |
+Frontend VPC   Application VPC     Data VPC
+Frontend VPC
+
+Handles public traffic.
+
+Components:
+
+CloudFront
+
+Application Load Balancer
+
+NAT Gateway
+
+Application VPC
+
+Runs backend microservices.
+
+Components:
+
+EC2 Auto Scaling
+
+Node.js services
+
+EFS storage
+
+Data VPC
+
+Contains databases.
+
+Components:
+
+Aurora
+
+DynamoDB
+
+ElastiCache
+
+S3
+
+9. Video Streaming Workflow
+Upload Video
+
+User
+↓
+Load Balancer
+↓
+Video Service
+↓
+S3
+
+Watch Video
+
+User
+↓
+CloudFront
+↓
+S3
+
+10. Notifications
+
+Notifications are sent using SNS.
+
+Examples:
+
+new video uploaded
+
+subscription expiring
+
+account alerts
+
+11. Auto Scaling System
+
+The backend uses Auto Scaling Groups.
+
+Example configuration:
+
+Minimum EC2: 2
+Maximum EC2: 10
+
+Traffic increases → new servers launch automatically.
+
+12. Security
+
+Security features include:
+
+IAM roles
+
+Security groups
+
+Private subnets
+
+HTTPS
+
+JWT authentication
+
+13. Development Strategy
+Phase 1
+
+Build locally.
+
+Node.js microservices
+
+Local database
+
+Local file storage
+
+Phase 2
+
+Integrate cloud storage.
+
+Replace local files with S3
+
+Phase 3
+
+Deploy services to AWS.
+
+EC2
+
+Load Balancer
+
+Auto Scaling
+
+Phase 4
+
+Add advanced infrastructure.
+
+Transit Gateway
+
+Multi VPC
+
+CloudFront
+
+ElastiCache
+
+SNS
+
+14. Project Folder Structure
+
+Example repository layout:
+
+cloudflix/
+
+backend/
+   auth-service
+   user-service
+   video-service
+   streaming-service
+   recommendation-service
+   notification-service
+
+gateway/
+   api-gateway
+
+frontend/
+   flutter-app
+
+infrastructure/
+   aws-config
+   architecture-diagrams
+15. Portfolio Value
+
+This project demonstrates:
+
+Cloud architecture design
+
+Microservices systems
+
+CDN streaming infrastructure
+
+Multi-VPC networking
+
+Transit Gateway usage
+
+Distributed databases
+
+Scalable systems
+
+It represents real production-level AWS architecture.
+
+16. Final Goal
+
+Create a fully scalable Netflix-style platform capable of:
+
+handling large traffic
+
+streaming videos globally
+
+scaling automatically
+
+maintaining high availability
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Perfect 👍 — we’ll do this **step-by-step like a real architect**.
+Let’s focus only on **PHASE 1: VPC Setup (Foundation)**
+
+---
+
+# 🚀 PHASE 1: VPC SETUP (VERY IMPORTANT)
+
+Goal:
+
+👉 Create **3 isolated VPCs** with proper subnet structure
+👉 This is the base of your entire system security
+
+---
+
+# 🧠 Step 1: Decide CIDR Blocks (CRITICAL)
+
+You must **plan IP ranges properly** (no overlap)
+
+### Use this:
+
+```text
+Public VPC  → 10.0.0.0/16
+App VPC     → 10.1.0.0/16
+Data VPC    → 10.2.0.0/16
+```
+
+👉 Why?
+
+* Easy to remember
+* No conflicts
+* Clean routing later
+
+---
+
+# 🏗️ Step 2: Create 3 VPCs
+
+Go to:
+
+👉 **Amazon VPC**
+
+Create:
+
+---
+
+## 🔵 VPC 1: Public VPC
+
+```text
+Name: public-vpc
+CIDR: 10.0.0.0/16
+```
+
+---
+
+## 🟢 VPC 2: App VPC
+
+```text
+Name: app-vpc
+CIDR: 10.1.0.0/16
+```
+
+---
+
+## 🟣 VPC 3: Data VPC
+
+```text
+Name: data-vpc
+CIDR: 10.2.0.0/16
+```
+
+---
+
+# 🌐 Step 3: Create Subnets (VERY IMPORTANT)
+
+We divide each VPC into:
+
+👉 Public Subnet
+👉 Private Subnet
+
+---
+
+## 🔵 Public VPC Subnets
+
+| Type           | CIDR        | Purpose       |
+| -------------- | ----------- | ------------- |
+| Public Subnet  | 10.0.1.0/24 | Load Balancer |
+| Private Subnet | 10.0.2.0/24 | API Gateway   |
+
+---
+
+## 🟢 App VPC Subnets
+
+| Type             | CIDR        | Purpose       |
+| ---------------- | ----------- | ------------- |
+| Private Subnet 1 | 10.1.1.0/24 | Auth Service  |
+| Private Subnet 2 | 10.1.2.0/24 | Video Service |
+
+👉 No public subnet here ❌
+
+---
+
+## 🟣 Data VPC Subnets
+
+| Type             | CIDR        | Purpose                        |
+| ---------------- | ----------- | ------------------------------ |
+| Private Subnet 1 | 10.2.1.0/24 | MySQL / RDS                    |
+| Private Subnet 2 | 10.2.2.0/24 | DynamoDB access / future Redis |
+
+👉 Fully private ❌
+
+---
+
+# 🌍 Step 4: Internet Gateway (ONLY FOR PUBLIC VPC)
+
+Create:
+
+👉 Internet Gateway
+
+Attach it to:
+
+```text
+public-vpc ONLY
+```
+
+---
+
+# 🛣️ Step 5: Route Tables
+
+---
+
+## 🔵 Public Subnet Route Table
+
+```text
+Destination     Target
+0.0.0.0/0  →    Internet Gateway
+```
+
+👉 This allows internet access
+
+---
+
+## 🟢 App VPC Route Table
+
+```text
+No internet route ❌
+```
+
+---
+
+## 🟣 Data VPC Route Table
+
+```text
+No internet route ❌
+```
+
+---
+
+# ⚠️ Step 6: Enable Auto-Assign Public IP
+
+ONLY for:
+
+👉 Public subnet in Public VPC
+
+Enable:
+
+```text
+Auto-assign public IPv4 → YES
+```
+
+Everything else:
+
+```text
+NO ❌
+```
+
+---
+
+# 🔐 Step 7: Basic Security Groups (Initial)
+
+Create simple SGs (we’ll refine later):
+
+---
+
+## Public SG
+
+```text
+Allow:
+HTTP (80)
+HTTPS (443)
+SSH (22) → your IP only
+```
+
+---
+
+## App SG
+
+```text
+Allow:
+Port 3000 (Node.js)
+From → Public VPC CIDR (10.0.0.0/16)
+```
+
+---
+
+## Data SG
+
+```text
+Allow:
+MySQL (3306)
+From → App VPC CIDR (10.1.0.0/16)
+```
+
+---
+
+# ✅ Final Result of Phase 1
+
+You now have:
+
+✔ 3 VPCs
+✔ Proper CIDR planning
+✔ Public + Private subnet design
+✔ Internet only in Public VPC
+✔ Basic security isolation
+
+---
+
+# 🧠 Visual Understanding
+
+```text
+[ Public VPC ]
+   ├── Public Subnet (ALB)
+   └── Private Subnet (API)
+
+[ App VPC ]
+   ├── Private Subnet (Auth)
+   └── Private Subnet (Video)
+
+[ Data VPC ]
+   ├── Private Subnet (RDS)
+   └── Private Subnet (Future Redis)
+```
+
+---
+
+# 🚫 Common Mistakes (Avoid This)
+
+❌ Overlapping CIDR
+❌ Making DB public
+❌ Giving internet to App/Data VPC
+❌ Using same subnet for everything
+
+---
+
+# 🧭 Your Task Now
+
+👉 Do exactly this in AWS console:
+
+1. Create 3 VPCs
+2. Create subnets
+3. Attach Internet Gateway to Public VPC
+4. Configure route tables
+
+---
+
+# 💬 After You Finish
+
+Tell me:
+
+👉 **“Phase 1 done”**
+
+Then I’ll guide you step-by-step into:
+
+# 🚀 Phase 2: Transit Gateway + Routing (REAL MAGIC 🔥)
+
+This is where your architecture becomes **interview-level advanced** 😎
+
+arn of topic
+arn:aws:sns:ap-south-2:796924254586:video-events-topic
+
+tumbnail queue
+arn:aws:sqs:ap-south-2:796924254586:thumbnail-queue
+https://sqs.ap-south-2.amazonaws.com/796924254586/thumbnail-queue
+
+transcode-queue
+arn:aws:sqs:ap-south-2:796924254586:transcode-queue
+https://sqs.ap-south-2.amazonaws.com/796924254586/transcode-queue
+
+notification-queue
+arn:aws:sqs:ap-south-2:796924254586:notification-queue
+https://sqs.ap-south-2.amazonaws.com/796924254586/notification-queue

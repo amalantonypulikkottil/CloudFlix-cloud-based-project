@@ -5,25 +5,31 @@ require("dotenv").config();
 const authProxy = require("./routes/authProxy");
 const userProxy = require("./routes/userProxy");
 const videoProxy = require("./routes/videoProxy");
+
 const app = express();
 
+// ✅ FIRST → parse body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ CORS
 app.use(cors({
-     origin: '*', // Allow all origins
-     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-     allowedHeaders: ['Content-Type', 'Authorization']
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use((req,res,next)=>{
+// ✅ Logger
+app.use((req, res, next) => {
   console.log("Gateway:", req.method, req.url);
+  console.log("Gateway Body:", req.body); // 🔥 debug
   next();
 });
 
+// ✅ Routes AFTER middleware
 app.use("/auth", authProxy);
 app.use("/users", userProxy);
 app.use("/videos", videoProxy);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 4000;
 

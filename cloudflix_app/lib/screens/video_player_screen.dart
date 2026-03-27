@@ -37,20 +37,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     loadRelatedVideos();
   }
 
-  // 🎥 Initialize Player
-  void initPlayer() {
+  void initPlayer() async {
+    await VideoController.getVideoStream(widget.videoId);
+
     videoController = VideoPlayerController.network(widget.videoUrl)
       ..initialize().then((_) {
         chewieController = ChewieController(
           videoPlayerController: videoController,
           autoPlay: true,
+          aspectRatio: 16 / 9,
+          showControls: true,
         );
         setState(() {});
         startProgressTracking();
       });
   }
 
-  // 📺 Load other videos
   void loadRelatedVideos() async {
     final videos = await VideoController.getVideos();
     setState(() {
@@ -58,7 +60,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     });
   }
 
-  // ⏱️ Track progress every 5 seconds
   void startProgressTracking() {
     progressTimer = Timer.periodic(Duration(seconds: 5), (_) async {
       if (!videoController.value.isInitialized) return;
@@ -84,29 +85,76 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const Color darkBg = Color(0xFF141414);
+
     return Scaffold(
-      appBar: AppBar(title: Text("Now Playing")),
+      backgroundColor: darkBg,
+      appBar: AppBar(
+        backgroundColor: darkBg,
+        elevation: 0,
+        title: const Text(
+          "Now Playing",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Column(
         children: [
-          // 🎥 BIG VIDEO PLAYER
+          // Professional video player with proper aspect ratio
           chewieController == null
               ? Container(
-                height: 220,
-                child: Center(child: CircularProgressIndicator()),
+                height: MediaQuery.of(context).size.height * 0.35,
+                color: Colors.black,
+                child: const Center(
+                  child: CircularProgressIndicator(color: Color(0xFFE50914)),
+                ),
               )
               : Container(
-                height: 220,
-                child: Chewie(controller: chewieController!),
+                color: Colors.black,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Chewie(controller: chewieController!),
+                ),
               ),
 
-          // 📺 RELATED VIDEOS
-          Expanded(
-            child: ListView.builder(
-              itemCount: relatedVideos.length,
-              itemBuilder: (context, index) {
-                return VideoCard(video: relatedVideos[index]);
-              },
+          // Related videos section
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            child: Row(
+              children: [
+                const Text(
+                  "More like this",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  "${relatedVideos.length} videos",
+                  style: TextStyle(color: Colors.grey[400]),
+                ),
+              ],
             ),
+          ),
+
+          Expanded(
+            child:
+                relatedVideos.isEmpty
+                    ? const Center(
+                      child: Text(
+                        "No related videos yet",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    )
+                    : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: relatedVideos.length,
+                      itemBuilder: (context, index) {
+                        return VideoCard(video: relatedVideos[index]);
+                      },
+                    ),
           ),
         ],
       ),

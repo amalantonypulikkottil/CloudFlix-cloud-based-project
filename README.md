@@ -22,6 +22,14 @@ It simulates a real-world OTT platform (like Netflix) with scalable video proces
 
 ## 🏗️ Architecture Overview
 
+This diagram represents the end-to-end architecture of CloudFlix, including microservices, video processing pipeline, and streaming flow.
+
+<p align="center">
+  <img src="./aws-cloudflix-architecture.png" alt="CloudFlix Architecture" width="100%">
+</p>
+
+---
+
 ### 📌 High-Level Flow
 
 User → API Gateway → Microservices → AWS Services
